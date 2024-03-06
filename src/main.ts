@@ -1,17 +1,17 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule } from '@nestjs/swagger';
-import { readFileSync } from 'fs';
-import { parse } from 'yaml';
-import { join } from 'path';
+import { getSwaggerDocument } from './helpers/getSwaggerDoc';
+import { config } from 'dotenv';
+
+config();
+const PORT = process.env.PORT || 4000;
 
 async function bootstrap() {
-  const pathToApiYaml = join(__dirname, '../doc/api.yaml');
-  const file = readFileSync(pathToApiYaml, 'utf8');
-  const swaggerDocument = parse(file);
+  const swaggerDocument = getSwaggerDocument();
   const app = await NestFactory.create(AppModule);
   const doc = SwaggerModule.createDocument(app, swaggerDocument);
   SwaggerModule.setup('doc', app, doc);
-  await app.listen(4000);
+  await app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 }
 bootstrap();
