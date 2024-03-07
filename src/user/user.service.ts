@@ -26,7 +26,9 @@ export class UserService {
             updatedAt: Date.now(),
         };
         users.push(newUser);
-        return newUser;
+        const resUser = { ...newUser };
+        delete resUser.password;
+        return resUser;
     }
 
     findAll() {
@@ -46,7 +48,9 @@ export class UserService {
         user.password = updateUserDto.newPassword;
         user.updatedAt = Date.now();
         user.version = user.version + 1;
-        return user;
+        const resUser = { ...user };
+        delete resUser.password;
+        return resUser;
     }
 
     remove(id: string) {
