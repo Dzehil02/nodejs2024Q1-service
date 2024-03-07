@@ -1,26 +1,56 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { users } from '../../db-store/store';
+import { createPassword } from 'src/helpers/createPassword';
+import { validateId } from 'src/helpers/validateId';
 
 @Injectable()
 export class UserService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
-  }
+    getUser(id: string) {
+        if (!validateId(id)) {
+            throw new BadRequestException(`Invalid user id: ${id}. ID must be uuid v4`);
+        }
+        const user = users.find((user) => user.id === id);
+        if (!user) {
+            throw new NotFoundException(`User with id ${id} not found`);
+        }
+        return user;
+    }
+    create(createUserDto: CreateUserDto) {
+        const newUser = {
+            id: createPassword(),
+            ...createUserDto,
+            version: 1,
+            createdAt: Date.now(),
+            updatedAt: Date.now(),
+        };
+        users.push(newUser);
+        return newUser;
+    }
 
-  findAll() {
-    return `This action returns all user`;
-  }
+    findAll() {
+        return users;
+    }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
+    findOne(id: string) {
+        const user = this.getUser(id);
+        return user;
+    }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
+    update(id: string, updateUserDto: UpdateUserDto) {
+        const user = this.getUser(id);
+        if (user.password !== updateUserDto.oldPassword) {
+            throw new ForbiddenException('Old password is wrong');
+        }
+        user.password = updateUserDto.newPassword;
+        user.updatedAt = Date.now();
+        user.version = user.version + 1;
+        return user;
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
-  }
+    remove(id: string) {
+        const user = this.getUser(id);
+        users.splice(users.indexOf(user), 1);
+    }
 }
