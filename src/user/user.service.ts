@@ -1,21 +1,14 @@
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { users } from '../../db-store/store';
 import { createPassword } from 'src/helpers/createPassword';
-import { validateId } from 'src/helpers/validateId';
+import { checkModelById } from 'src/helpers/modelValidators';
 
 @Injectable()
 export class UserService {
     getUser(id: string) {
-        if (!validateId(id)) {
-            throw new BadRequestException(`Invalid id: ${id}. ID must be uuid v4`);
-        }
-        const user = users.find((user) => user.id === id);
-        if (!user) {
-            throw new NotFoundException(`Entity with id ${id} not found`);
-        }
-        return user;
+        return checkModelById(id, users);
     }
     create(createUserDto: CreateUserDto) {
         const newUser = {

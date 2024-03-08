@@ -1,21 +1,14 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { tracks } from 'db-store/store';
-import { validateId } from 'src/helpers/validateId';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { createPassword } from 'src/helpers/createPassword';
+import { checkModelById } from 'src/helpers/modelValidators';
 
 @Injectable()
 export class TrackService {
     getTrack(id: string) {
-        if (!validateId(id)) {
-            throw new BadRequestException(`Invalid id: ${id}. ID must be uuid v4`);
-        }
-        const track = tracks.find((track) => track.id === id);
-        if (!track) {
-            throw new NotFoundException(`Entity with id ${id} not found`);
-        }
-        return track;
+        return checkModelById(id, tracks);
     }
 
     create(createTrackDto: CreateTrackDto) {

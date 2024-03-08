@@ -1,3 +1,7 @@
+export interface ModelUUID {
+  id: string;
+}
+
 export interface User {
   id: string;
   login: string;
