@@ -9,11 +9,11 @@ import { validateId } from 'src/helpers/validateId';
 export class UserService {
     getUser(id: string) {
         if (!validateId(id)) {
-            throw new BadRequestException(`Invalid user id: ${id}. ID must be uuid v4`);
+            throw new BadRequestException(`Invalid id: ${id}. ID must be uuid v4`);
         }
         const user = users.find((user) => user.id === id);
         if (!user) {
-            throw new NotFoundException(`User with id ${id} not found`);
+            throw new NotFoundException(`Entity with id ${id} not found`);
         }
         return user;
     }

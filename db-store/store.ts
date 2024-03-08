@@ -1,9 +1,9 @@
 import { Album, Artist, Favorites, Track, User } from './types';
-import { createPassword } from '../src/helpers/createPassword';
+import {USER_ID, TRACK_ID, ALBUM_ID, ARTIST_ID} from './const';
 
 export const users: User[] = [
   {
-    id: createPassword(),
+    id: USER_ID,
     login: 'admin',
     password: 'admin',
     version: 1,
@@ -14,7 +14,7 @@ export const users: User[] = [
 
 export const artists: Artist[] = [
   {
-    id: createPassword(),
+    id: ARTIST_ID,
     name: 'Freddie Mercury',
     grammy: false,
   },
@@ -22,7 +22,7 @@ export const artists: Artist[] = [
 
 export const albums: Album[] = [
   {
-    id: createPassword(),
+    id: ALBUM_ID,
     name: 'Innuendo',
     year: 1991,
     artistId: '1',
@@ -31,7 +31,7 @@ export const albums: Album[] = [
 
 export const tracks: Track[] = [
   {
-    id: createPassword(),
+    id: TRACK_ID,
     name: 'Innuendo',
     artistId: '1',
     albumId: '1',
