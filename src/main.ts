@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { getSwaggerDocument } from './helpers/getSwaggerDoc';
+import { getSwaggerDocument } from './utils/getSwaggerDoc';
 import { config } from 'dotenv';
 import { serve, setup } from 'swagger-ui-express';
 

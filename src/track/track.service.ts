@@ -2,11 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { tracks } from 'db-store/store';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { CreateTrackDto } from './dto/create-track.dto';
-import { createPassword } from 'src/helpers/createPassword';
-import { checkModelById } from 'src/helpers/modelValidators';
+import { createPassword } from 'src/utils/createPassword';
+import { checkModelById } from 'src/utils/modelValidators';
+import { FavoritesService } from 'src/favorites/favorites.service';
 
 @Injectable()
 export class TrackService {
+    constructor(private readonly favoritesService: FavoritesService) {}
     getTrack(id: string) {
         return checkModelById(id, tracks);
     }
@@ -39,5 +41,6 @@ export class TrackService {
     remove(id: string) {
         const track = this.getTrack(id);
         tracks.splice(tracks.indexOf(track), 1);
+        this.favoritesService.deleteRelatedTrack(id);
     }
 }

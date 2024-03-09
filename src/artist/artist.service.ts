@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
-import { checkModelById } from 'src/helpers/modelValidators';
+import { checkModelById } from 'src/utils/modelValidators';
 import { albums, artists, tracks } from 'db-store/store';
-import { createPassword } from 'src/helpers/createPassword';
+import { createPassword } from 'src/utils/createPassword';
+import { FavoritesService } from 'src/favorites/favorites.service';
 
 @Injectable()
 export class ArtistService {
+    constructor(private readonly favoritesService: FavoritesService) {}
     getArtist(id: string) {
         return checkModelById(id, artists);
     }
@@ -50,5 +52,6 @@ export class ArtistService {
             });
             artists.splice(artists.indexOf(artist), 1);
         }
+        this.favoritesService.deleteRelatedArtist(id);
     }
 }

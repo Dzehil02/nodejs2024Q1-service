@@ -25,17 +25,17 @@ export const albums: Album[] = [
     id: ALBUM_ID,
     name: 'Innuendo',
     year: 1991,
-    artistId: '1',
+    artistId: ARTIST_ID,
   },
 ];
 
 export const tracks: Track[] = [
   {
     id: TRACK_ID,
-    name: 'Innuendo',
-    artistId: '1',
-    albumId: '1',
-    duration: 0,
+    name: 'The Show Must Go On',
+    artistId: ARTIST_ID,
+    albumId: ALBUM_ID,
+    duration: 262,
   },
 ];
 

@@ -2,8 +2,8 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { users } from '../../db-store/store';
-import { createPassword } from 'src/helpers/createPassword';
-import { checkModelById } from 'src/helpers/modelValidators';
+import { createPassword } from 'src/utils/createPassword';
+import { checkModelById } from 'src/utils/modelValidators';
 
 @Injectable()
 export class UserService {
