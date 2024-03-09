@@ -32,9 +32,7 @@ export class TrackService {
     update(id: string, updateTrackDto: UpdateTrackDto) {
         const track = this.getTrack(id);
         track.name = updateTrackDto.name;
-        if (updateTrackDto.duration) {
-            track.duration = updateTrackDto.duration;
-        }
+        track.duration = updateTrackDto.duration;
         return track;
     }
 
