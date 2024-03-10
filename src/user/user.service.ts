@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 import { users } from '../../db-store/store';
 import { createPassword } from 'src/utils/createPassword';
 import { checkModelById } from 'src/utils/modelValidators';
@@ -33,12 +33,12 @@ export class UserService {
         return user;
     }
 
-    update(id: string, updateUserDto: UpdateUserDto) {
+    update(id: string, updatePasswordDto: UpdatePasswordDto) {
         const user = this.getUser(id);
-        if (user.password !== updateUserDto.oldPassword) {
+        if (user.password !== updatePasswordDto.oldPassword) {
             throw new ForbiddenException('Old password is wrong');
         }
-        user.password = updateUserDto.newPassword;
+        user.password = updatePasswordDto.newPassword;
         user.updatedAt = Date.now();
         user.version = user.version + 1;
         const resUser = { ...user };

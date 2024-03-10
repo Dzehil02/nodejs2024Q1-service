@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsUuidOrNull } from 'src/utils/decorators/is-uuid-or-null.decorator';
 
 export class CreateAlbumDto {
     @IsNotEmpty()
@@ -9,5 +10,6 @@ export class CreateAlbumDto {
     @IsNumber()
     year: number;
 
+    @IsUuidOrNull()
     artistId: string | null = null;
 }

@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @Controller('user')
 export class UserController {
@@ -37,8 +37,8 @@ export class UserController {
 
     @Put(':id')
     @UsePipes(new ValidationPipe())
-    update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-        return this.userService.update(id, updateUserDto);
+    update(@Param('id') id: string, @Body() updatePasswordDto: UpdatePasswordDto) {
+        return this.userService.update(id, updatePasswordDto);
     }
 
     @Delete(':id')
