@@ -1,18 +1,18 @@
 # Home Library Service
 
-##### 1. Download this repository
+### 1. Download this repository
 
 ```
 git clone {repository URL}
 ```
 
-##### 2. Install NPM modules
+### 2. Install NPM modules
 
 ```
 npm install
 ```
 
-##### 3. Run application
+### 3. Run application
 
 ```
 npm start (or npm run start:dev)
@@ -49,7 +49,7 @@ response -> [
 ]
 ```
 
-##### 4. Run tests
+### 4. Run tests
 
 **After application running open new terminal and enter:**
 
@@ -77,7 +77,7 @@ _To run only specific test suite with authorization_
 npm run test:auth -- <path to suite>
 ```
 
-##### 5. For auto-fix and format you can use:
+### 5. For auto-fix and format you can use:
 
 ```
 npm run lint
