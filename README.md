@@ -1,61 +1,85 @@
 # Home Library Service
 
-## Prerequisites
-
-- Git - [Download & Install Git](https://git-scm.com/downloads).
-- Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
-
-## Downloading
+### 1. Download this repository
 
 ```
 git clone {repository URL}
 ```
 
-## Installing NPM modules
+### 2. Install NPM modules
 
 ```
 npm install
 ```
 
-## Running application
+### 3. Create *.env* file and add **PORT=4000** (see *.env.example* file) or just rename *.env.example* file to *.env* file
+
+### 4. Run application
 
 ```
-npm start
+npm start (or npm run start:dev)
 ```
 
-After starting the app on port (4000 as default) you can open
-in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
-For more information about OpenAPI/Swagger please visit https://swagger.io/.
+-   After starting the app on port (**4000 as default**) you can open
+    in your browser OpenAPI documentation by typing http://localhost:4000/doc
 
-## Testing
+-   All requests are available by URL http://localhost:4000/
 
-After application running open new terminal and enter:
+_Examples:_
 
-To run all tests without authorization
+```
+get request -> http://localhost:4000/artist
+
+response -> [
+    {
+        "id": "80458200-dd5d-11ee-a97d-c5cef3c97348",
+        "name": "Freddie Mercury",
+        "grammy": false
+    }
+]
+------------------------------------------------------
+get request -> http://localhost:4000/track
+
+response -> [
+    {
+        "id": "7fbbae03-dd5c-11ee-a686-ed5a6659a3e1",
+        "name": "The Show Must Go On",
+        "artistId": "80458200-dd5d-11ee-a97d-c5cef3c97348",
+        "albumId": "201702a0-dd5d-11ee-82b9-f35a2947a09a",
+        "duration": 262
+    }
+]
+```
+
+### 5. Run tests
+
+**After application running open new terminal and enter:**
+
+_To run all tests without authorization_
 
 ```
 npm run test
 ```
 
-To run only one of all test suites
+_To run only one of all test suites_
 
 ```
 npm run test -- <path to suite>
 ```
 
-To run all test with authorization
+_To run all test with authorization_
 
 ```
 npm run test:auth
 ```
 
-To run only specific test suite with authorization
+_To run only specific test suite with authorization_
 
 ```
 npm run test:auth -- <path to suite>
 ```
 
-### Auto-fix and format
+### 6. For auto-fix and format you can use:
 
 ```
 npm run lint
@@ -64,9 +88,3 @@ npm run lint
 ```
 npm run format
 ```
-
-### Debugging in VSCode
-
-Press <kbd>F5</kbd> to debug.
-
-For more information, visit: https://code.visualstudio.com/docs/editor/debugging
