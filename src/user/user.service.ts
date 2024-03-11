@@ -25,12 +25,20 @@ export class UserService {
     }
 
     findAll() {
-        return users;
+        const resUsers = users.map((user) => {
+            const resUser = { ...user };
+            delete resUser.password;
+            return resUser;
+        });
+        console.log(users);
+        return resUsers;
     }
 
     findOne(id: string) {
         const user = this.getUser(id);
-        return user;
+        const resUser = { ...user };
+        delete resUser.password;
+        return resUser;
     }
 
     update(id: string, updatePasswordDto: UpdatePasswordDto) {
