@@ -30,7 +30,6 @@ export class UserService {
             delete resUser.password;
             return resUser;
         });
-        console.log(users);
         return resUsers;
     }
 
