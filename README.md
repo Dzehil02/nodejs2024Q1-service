@@ -1,18 +1,20 @@
 # Home Library Service
 
-##### 1. Download this repository
+### 1. Download this repository
 
 ```
 git clone {repository URL}
 ```
 
-##### 2. Install NPM modules
+### 2. Install NPM modules
 
 ```
 npm install
 ```
 
-##### 3. Run application
+### 3. Create *.env* file and add **PORT=4000** (see *.env.example* file) or just rename *.env.example* file to *.env* file
+
+### 4. Run application
 
 ```
 npm start (or npm run start:dev)
@@ -49,7 +51,7 @@ response -> [
 ]
 ```
 
-##### 4. Run tests
+### 5. Run tests
 
 **After application running open new terminal and enter:**
 
@@ -77,7 +79,7 @@ _To run only specific test suite with authorization_
 npm run test:auth -- <path to suite>
 ```
 
-##### 5. For auto-fix and format you can use:
+### 6. For auto-fix and format you can use:
 
 ```
 npm run lint
