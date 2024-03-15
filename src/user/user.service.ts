@@ -4,9 +4,11 @@ import { UpdatePasswordDto } from './dto/update-password.dto';
 import { users } from '../../db-store/store';
 import { createPassword } from 'src/utils/createPassword';
 import { checkModelById } from 'src/utils/modelValidators';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class UserService {
+    constructor(private prismaService: PrismaService) {}
     getUser(id: string) {
         return checkModelById(id, users);
     }
@@ -25,12 +27,14 @@ export class UserService {
     }
 
     findAll() {
-        const resUsers = users.map((user) => {
-            const resUser = { ...user };
-            delete resUser.password;
-            return resUser;
-        });
-        return resUsers;
+        // const resUsers = users.map((user) => {
+        //     const resUser = { ...user };
+        //     delete resUser.password;
+        //     return resUser;
+        // });
+        // return resUsers;
+
+        return this.prismaService.user.findMany();
     }
 
     findOne(id: string) {
