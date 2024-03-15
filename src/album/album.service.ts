@@ -1,53 +1,57 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
-import { checkModelById } from 'src/utils/modelValidators';
-import { albums, tracks } from 'db-store/store';
+import { checkEntityById } from 'src/utils/modelValidators';
 import { createPassword } from 'src/utils/createPassword';
 import { FavoritesService } from 'src/favorites/favorites.service';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { Album } from '@prisma/client';
 
 @Injectable()
 export class AlbumService {
-    constructor(private readonly favoritesService: FavoritesService) {}
-    getAlbum(id: string) {
-        return checkModelById(id, albums);
+    constructor(private readonly favoritesService: FavoritesService, private prismaService: PrismaService) {}
+    async getAlbum(id: string): Promise<Album> {
+        const album = await this.prismaService.album.findUnique({
+            where: {
+                id,
+            },
+        });
+        return checkEntityById(id, album);
     }
-    create(createAlbumDto: CreateAlbumDto) {
+    async create(createAlbumDto: CreateAlbumDto): Promise<Album> {
         const newAlbum = {
             id: createPassword(),
             ...createAlbumDto,
         };
-        albums.push(newAlbum);
+        await this.prismaService.album.create({ data: newAlbum });
         return newAlbum;
     }
 
-    findAll() {
+    async findAll(): Promise<Album[]> {
+        const albums = await this.prismaService.album.findMany();
         return albums;
     }
 
-    findOne(id: string) {
-        const album = this.getAlbum(id);
+    async findOne(id: string): Promise<Album> {
+        const album = await this.getAlbum(id);
         return album;
     }
 
-    update(id: string, updateAlbumDto: UpdateAlbumDto) {
-        const album = this.getAlbum(id);
-        album.name = updateAlbumDto.name;
-        album.year = updateAlbumDto.year;
-        album.artistId = updateAlbumDto.artistId;
-        return album;
+    async update(id: string, updateAlbumDto: UpdateAlbumDto): Promise<Album> {
+        const album = await this.getAlbum(id);
+        const updatedAlbum = await this.prismaService.album.update({
+            where: { id: album.id },
+            data: {
+                name: updateAlbumDto.name,
+                year: updateAlbumDto.year,
+                artistId: updateAlbumDto.artistId,
+            },
+        });
+        return updatedAlbum;
     }
 
-    remove(id: string) {
-        const album = this.getAlbum(id);
-        if (album) {
-            tracks.find((track) => {
-                if (track.albumId === album.id) {
-                    track.albumId = null;
-                }
-            });
-            albums.splice(albums.indexOf(album), 1);
-        }
-        this.favoritesService.deleteRelatedAlbum(id);
+    async remove(id: string): Promise<void> {
+        const album = await this.getAlbum(id);
+        await this.prismaService.album.delete({ where: { id: album.id } });
     }
 }

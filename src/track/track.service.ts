@@ -19,7 +19,7 @@ export class TrackService {
         return checkEntityById(id, track);
     }
 
-    async create(createTrackDto: CreateTrackDto) {
+    async create(createTrackDto: CreateTrackDto): Promise<Track> {
         const newTrack = {
             id: createPassword(),
             ...createTrackDto,
@@ -28,17 +28,17 @@ export class TrackService {
         return newTrack;
     }
 
-    async findAll() {
+    async findAll(): Promise<Track[]> {
         const tracks = await this.prismaService.track.findMany();
         return tracks;
     }
 
-    async findOne(id: string) {
+    async findOne(id: string): Promise<Track> {
         const track = await this.getTrack(id);
         return track;
     }
 
-    async update(id: string, updateTrackDto: UpdateTrackDto) {
+    async update(id: string, updateTrackDto: UpdateTrackDto): Promise<Track> {
         const track = await this.getTrack(id);
         const updatedTrack = await this.prismaService.track.update({
             where: { id: track.id },
@@ -50,7 +50,7 @@ export class TrackService {
         return updatedTrack;
     }
 
-    async remove(id: string) {
+    async remove(id: string): Promise<void> {
         const track = await this.getTrack(id);
         await this.prismaService.track.delete({ where: { id: track.id } });
     }
