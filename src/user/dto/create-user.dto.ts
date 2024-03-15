@@ -1,7 +1,6 @@
-import { User } from 'db-store/types';
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class CreateUserDto implements Partial<User> {
+export class CreateUserDto {
     @IsNotEmpty()
     @IsString()
     login: string;

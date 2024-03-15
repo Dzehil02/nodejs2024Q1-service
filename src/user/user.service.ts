@@ -1,64 +1,60 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
-import { users } from '../../db-store/store';
 import { createPassword } from 'src/utils/createPassword';
-import { checkModelById } from 'src/utils/modelValidators';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { checkEntityById } from 'src/utils/modelValidators';
+import { transformUserResponse, transformUsersResponse } from 'src/utils/transformUsersResponse';
 
 @Injectable()
 export class UserService {
     constructor(private prismaService: PrismaService) {}
-    getUser(id: string) {
-        return checkModelById(id, users);
+    async getUser(id: string) {
+        const user = await this.prismaService.user.findUnique({
+            where: {
+                id,
+            },
+        });
+        return checkEntityById(id, user);
     }
-    create(createUserDto: CreateUserDto) {
+    async create(createUserDto: CreateUserDto) {
         const newUser = {
             id: createPassword(),
             ...createUserDto,
-            version: 1,
-            createdAt: Date.now(),
-            updatedAt: Date.now(),
         };
-        users.push(newUser);
-        const resUser = { ...newUser };
-        delete resUser.password;
-        return resUser;
+        const resUser = await this.prismaService.user.create({ data: newUser });
+        return transformUserResponse(resUser);
     }
 
-    findAll() {
-        // const resUsers = users.map((user) => {
-        //     const resUser = { ...user };
-        //     delete resUser.password;
-        //     return resUser;
-        // });
-        // return resUsers;
-
-        return this.prismaService.user.findMany();
+    async findAll() {
+        const users = await this.prismaService.user.findMany();
+        return transformUsersResponse(users);
     }
 
-    findOne(id: string) {
-        const user = this.getUser(id);
-        const resUser = { ...user };
-        delete resUser.password;
-        return resUser;
+    async findOne(id: string) {
+        const user = await this.getUser(id);
+        delete user.password;
+        return user;
     }
 
-    update(id: string, updatePasswordDto: UpdatePasswordDto) {
-        const user = this.getUser(id);
+    async update(id: string, updatePasswordDto: UpdatePasswordDto) {
+        const user = await this.getUser(id);
         if (user.password !== updatePasswordDto.oldPassword) {
             throw new ForbiddenException('Old password is wrong');
         }
-        user.password = updatePasswordDto.newPassword;
-        user.updatedAt = Date.now();
-        user.version = user.version + 1;
-        const resUser = { ...user };
-        delete resUser.password;
-        return resUser;
+        const updatedUser = await this.prismaService.user.update({
+            where: { id },
+            data: {
+                password: updatePasswordDto.newPassword,
+                version: user.version + 1,
+            },
+        });
+        const resUser = { ...updatedUser };
+        return transformUserResponse(resUser);
     }
 
-    remove(id: string) {
-        const user = this.getUser(id);
-        users.splice(users.indexOf(user), 1);
+    async remove(id: string) {
+        const user = await this.getUser(id);
+        await this.prismaService.user.delete({ where: { id: user.id } });
     }
 }
