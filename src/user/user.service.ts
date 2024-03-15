@@ -5,11 +5,13 @@ import { createPassword } from 'src/utils/createPassword';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { checkEntityById } from 'src/utils/modelValidators';
 import { transformUserResponse, transformUsersResponse } from 'src/utils/transformUsersResponse';
+import { User } from 'db-store/types';
+import { User as UserPrismaClient } from '@prisma/client';
 
 @Injectable()
 export class UserService {
     constructor(private prismaService: PrismaService) {}
-    async getUser(id: string) {
+    async getUser(id: string): Promise<UserPrismaClient> {
         const user = await this.prismaService.user.findUnique({
             where: {
                 id,
@@ -17,7 +19,7 @@ export class UserService {
         });
         return checkEntityById(id, user);
     }
-    async create(createUserDto: CreateUserDto) {
+    async create(createUserDto: CreateUserDto): Promise<Omit<User, 'password'>> {
         const newUser = {
             id: createPassword(),
             ...createUserDto,
@@ -26,18 +28,18 @@ export class UserService {
         return transformUserResponse(resUser);
     }
 
-    async findAll() {
+    async findAll(): Promise<Omit<User, 'password'>[]> {
         const users = await this.prismaService.user.findMany();
         return transformUsersResponse(users);
     }
 
-    async findOne(id: string) {
+    async findOne(id: string): Promise<Omit<User, 'password'>> {
         const user = await this.getUser(id);
-        delete user.password;
-        return user;
+        const resUser = { ...user };
+        return transformUserResponse(resUser);
     }
 
-    async update(id: string, updatePasswordDto: UpdatePasswordDto) {
+    async update(id: string, updatePasswordDto: UpdatePasswordDto): Promise<Omit<User, 'password'>> {
         const user = await this.getUser(id);
         if (user.password !== updatePasswordDto.oldPassword) {
             throw new ForbiddenException('Old password is wrong');
@@ -53,7 +55,7 @@ export class UserService {
         return transformUserResponse(resUser);
     }
 
-    async remove(id: string) {
+    async remove(id: string): Promise<void> {
         const user = await this.getUser(id);
         await this.prismaService.user.delete({ where: { id: user.id } });
     }
