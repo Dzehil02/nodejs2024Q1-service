@@ -3,13 +3,12 @@ import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
 import { checkEntityById } from 'src/utils/modelValidators';
 import { createPassword } from 'src/utils/createPassword';
-import { FavoritesService } from 'src/favorites/favorites.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Album } from '@prisma/client';
 
 @Injectable()
 export class AlbumService {
-    constructor(private readonly favoritesService: FavoritesService, private prismaService: PrismaService) {}
+    constructor(private prismaService: PrismaService) {}
     async getAlbum(id: string): Promise<Album> {
         const album = await this.prismaService.album.findUnique({
             where: {
@@ -22,6 +21,7 @@ export class AlbumService {
         const newAlbum = {
             id: createPassword(),
             ...createAlbumDto,
+            favoritesId: null,
         };
         await this.prismaService.album.create({ data: newAlbum });
         return newAlbum;

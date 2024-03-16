@@ -3,13 +3,12 @@ import { UpdateTrackDto } from './dto/update-track.dto';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { createPassword } from 'src/utils/createPassword';
 import { checkEntityById } from 'src/utils/modelValidators';
-import { FavoritesService } from 'src/favorites/favorites.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Track } from '@prisma/client';
 
 @Injectable()
 export class TrackService {
-    constructor(private readonly favoritesService: FavoritesService, private prismaService: PrismaService) {}
+    constructor(private prismaService: PrismaService) {}
     async getTrack(id: string): Promise<Track> {
         const track = await this.prismaService.track.findUnique({
             where: {
@@ -23,6 +22,7 @@ export class TrackService {
         const newTrack = {
             id: createPassword(),
             ...createTrackDto,
+            favoritesId: null,
         };
         await this.prismaService.track.create({ data: newTrack });
         return newTrack;

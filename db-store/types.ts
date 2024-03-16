@@ -2,6 +2,8 @@ export interface ModelUUID {
   id: string;
 }
 
+export type entityType = 'artist' | 'album' | 'track';
+
 export interface User {
   id: string;
   login: string;

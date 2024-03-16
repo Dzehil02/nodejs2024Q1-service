@@ -3,13 +3,12 @@ import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
 import { checkEntityById } from 'src/utils/modelValidators';
 import { createPassword } from 'src/utils/createPassword';
-import { FavoritesService } from 'src/favorites/favorites.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Artist } from '@prisma/client';
 
 @Injectable()
 export class ArtistService {
-    constructor(private readonly favoritesService: FavoritesService, private prismaService: PrismaService) {}
+    constructor(private prismaService: PrismaService) {}
     async getArtist(id: string): Promise<Artist> {
         const artist = await this.prismaService.artist.findUnique({
             where: {
@@ -22,6 +21,7 @@ export class ArtistService {
         const newArtist = {
             id: createPassword(),
             ...createArtistDto,
+            favoritesId: null,
         };
         await this.prismaService.artist.create({ data: newArtist });
         return newArtist;

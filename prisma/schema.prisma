@@ -14,7 +14,7 @@ datasource db {
 }
 
 model User {
-  id String @id
+  id String @id @default(uuid())
   login String
   password String
   version Int @default(1)
@@ -23,35 +23,42 @@ model User {
 } 
 
 model Artist {
-  id String @id
+  id String @id @default(uuid())
   name String
   grammy Boolean @default(false)
   tracks Track[]
   albums Album[]
+  favorites Favorites? @relation(fields: [favoritesId], references: [id], onDelete: Cascade)
+  favoritesId String?
 }
 
 model Track {
-  id String @id
+  id String @id @default(uuid())
   name String
   artistId String?
   albumId String?
   duration Int
   artist Artist? @relation(fields: [artistId], references: [id], onDelete: SetNull)
   album Album? @relation(fields: [albumId], references: [id], onDelete: SetNull)
+  favorites Favorites? @relation(fields: [favoritesId], references: [id], onDelete: Cascade)
+  favoritesId String?
 }
 
 model Album {
-  id String @id
+  id String @id @default(uuid())
   name String
   year Int
   artistId String?
   artist Artist? @relation(fields: [artistId], references: [id], onDelete: SetNull)
   tracks Track[]
+  favorites Favorites? @relation(fields: [favoritesId], references: [id], onDelete: Cascade)
+  favoritesId String?
 }
 
 model Favorites {
-  id String @id
-  artists String[]
-  tracks String[]
-  albums String[]
+  id String @id @default(uuid())
+  artists Artist[]
+  tracks Track[]
+  albums Album[]
+  
 }
