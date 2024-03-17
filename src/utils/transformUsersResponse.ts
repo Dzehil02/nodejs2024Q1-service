@@ -1,5 +1,5 @@
 import { User as UserPrismaClient } from '@prisma/client';
-import { User } from 'db-store/types';
+import { User } from 'src/types/types';
 
 export const transformUserResponse = (resUser: UserPrismaClient): Omit<User, 'password'> => {
     delete resUser.password;

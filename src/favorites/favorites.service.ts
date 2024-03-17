@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { Favorites } from '@prisma/client';
-import { entityType } from 'db-store/types';
+import { entityType } from 'src/types/types';
 import { AlbumService } from 'src/album/album.service';
 import { ArtistService } from 'src/artist/artist.service';
 import { PrismaService } from 'src/prisma/prisma.service';

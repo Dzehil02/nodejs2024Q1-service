@@ -5,7 +5,7 @@ import { createPassword } from 'src/utils/createPassword';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { checkEntityById } from 'src/utils/modelValidators';
 import { transformUserResponse, transformUsersResponse } from 'src/utils/transformUsersResponse';
-import { User } from 'db-store/types';
+import { User } from 'src/types/types';
 import { User as UserPrismaClient } from '@prisma/client';
 
 @Injectable()

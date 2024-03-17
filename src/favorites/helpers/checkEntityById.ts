@@ -1,5 +1,5 @@
 import { BadRequestException, UnprocessableEntityException } from '@nestjs/common';
-import { ModelUUID } from 'db-store/types';
+import { ModelUUID } from 'src/types/types';
 import { validateId } from '../../utils/validateId';
 
 export const checkEntityById = <T extends ModelUUID>(id: string, models: Array<T>): T => {
