@@ -1,11 +1,11 @@
-FROM node:20-alpine3.17
+FROM node:alpine
 
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm install && npm cache clean --force
 
 COPY . .
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "start:docker:migrate"]

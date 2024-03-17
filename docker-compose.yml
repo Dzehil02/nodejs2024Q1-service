@@ -10,9 +10,9 @@ services:
             - /app/node_modules
         ports:
             - ${PORT}:4000
-        command: npm start
         depends_on:
             - db
+        restart: always
     db:
         image: postgres:13.5
         restart: always
