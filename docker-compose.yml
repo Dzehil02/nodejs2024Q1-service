@@ -6,8 +6,8 @@ services:
         env_file:
             - .env
         volumes:
-            - .:/app
             - /app/node_modules
+            - ./src:/app/src
         ports:
             - ${PORT}:${PORT}
         depends_on:
@@ -16,7 +16,7 @@ services:
         networks:
             - hls
     db:
-        image: postgres:13.5:alpine
+        image: postgres:13.5
         env_file:
             - .env
         ports:
@@ -25,9 +25,11 @@ services:
             - postgres:/var/lib/postgresql/data
         restart: always
         networks:
-            - hls        
+            - hls
+
 volumes:
     postgres:
+
 networks:
     hls:
         name: ${NETWORK}

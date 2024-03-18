@@ -21,10 +21,10 @@
         "test:cov": "jest --coverage",
         "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
         "cleardb": "npx prisma migrate reset --force",
-        "db": "docker exec -it nodejs2024q1-service-db-1 psql -U myuser",
+        "db": "docker exec -it nodejs2024q1-service-db-1 psql -U myuser -d mydb",
         "migrate": "docker exec nodejs2024q1-service-app-1 npx prisma migrate dev --name init",
-        "start:docker:migrate": "npx prisma migrate dev --name init && npm run start:dev",
-        "docker:test": "docker-compose exec nodejs2024q1-service-app-1 npm run test"
+        "start:docker:migrate": "npx prisma generate && npx prisma migrate dev --name init && npm run start:dev",
+        "docker:test": "docker exec nodejs2024q1-service-app-1 npm run test"
     },
     "dependencies": {
         "@nestjs/common": "^8.0.0",
