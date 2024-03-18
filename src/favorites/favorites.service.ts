@@ -6,6 +6,7 @@ import { ArtistService } from 'src/artist/artist.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { TrackService } from 'src/track/track.service';
 import { createPassword } from 'src/utils/createPassword';
+import { favsData } from './const/favsData';
 
 @Injectable()
 export class FavoritesService {
@@ -45,7 +46,7 @@ export class FavoritesService {
         }
     }
     async findAll(): Promise<Favorites> {
-        const favorites = await this.prismaService.favorites.findFirst({
+        let favorites = await this.prismaService.favorites.findFirst({
             include: {
                 tracks: {
                     select: { id: true, name: true, duration: true, albumId: true, artistId: true },
@@ -58,6 +59,18 @@ export class FavoritesService {
                 },
             },
         });
+
+        if (!favorites) {
+            favorites = await this.prismaService.favorites.create({
+                data: favsData,
+                include: {
+                    tracks: true,
+                    albums: true,
+                    artists: true,
+                },
+            });
+        }
+
         return favorites;
     }
 
