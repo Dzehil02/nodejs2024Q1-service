@@ -1,7 +1,8 @@
-version: '3.8'
+version: '3'
 
 services:
     app:
+        container_name: app
         build: .
         env_file:
             - .env
@@ -16,7 +17,8 @@ services:
         networks:
             - hls
     db:
-        image: postgres:13.5
+        container_name: db
+        build: ./db
         env_file:
             - .env
         ports:
@@ -32,5 +34,4 @@ volumes:
 
 networks:
     hls:
-        name: ${NETWORK}
         driver: ${DRIVER}
