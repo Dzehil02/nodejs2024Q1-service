@@ -64,7 +64,12 @@ response -> [
 #### Important
 ___If you want to rebuild and run container using `docker-compose up --build`, use the `npm run docker:down` command before, to clean up volumes in database.___
 
-### 5. Run tests
+### 5. Run vulnerabilities scanning
+```
+npm run docker:scout:app
+npm run docker:scout:db
+```
+### 6. Run tests
 
 **After application running open new terminal and enter:**
 
@@ -92,7 +97,7 @@ _To run only specific test suite with authorization_
 npm run test:auth -- <path to suite>
 ```
 
-### 6. For auto-fix and format you can use:
+### 7. For auto-fix and format you can use:
 
 ```
 npm run lint
