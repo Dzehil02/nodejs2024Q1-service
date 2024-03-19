@@ -11,7 +11,7 @@ Add **environment variables** (see _.env.example_ file) or just rename _.env.exa
 
 ### 3. Run Docker Desktop
 
-> _***! Check the ports and running containers in Docker.***_ 
+> _***! Check the ports and running containers in Docker.***_<br>
 > _***!! If the port is already occupied or other containers are already using the necessary resources, you will need to free up these resources or choose different ports for your application.***_
 
 ### 4. Run Docker Container
