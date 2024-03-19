@@ -4,7 +4,7 @@ export const favsData = {
         create: {
             id: '6a98e9b0-e573-11ee-acdb-a36effc54b5b',
             name: 'Album',
-            year: 2022,
+            year: 2024,
         },
     },
     artists: {
