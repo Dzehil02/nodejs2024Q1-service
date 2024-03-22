@@ -7,7 +7,7 @@ git clone {repository URL} or Download ZIP
 ```
 
 ### 2. Create _.env_ file 
-Add **environment variables** (see _.env.example_ file) or just rename _.env.example_ file to _.env_ file
+Add **environment variables** (see _.env.example_ file) **or just rename _.env.example_ file to _.env_ file**
 
 ### 3. Run Docker Desktop
 
@@ -60,10 +60,6 @@ response -> [
     }
 ]
 ```
-
-#### Important
-___If you want to rebuild and run container using `docker-compose up --build`, use the `npm run docker:down` command before, to clean up volumes in database.___
-
 ### 5. Run vulnerabilities scanning
 ```
 npm run docker:scout:app

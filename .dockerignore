@@ -1,6 +1,5 @@
 **/node_modules/
 **/dist
-prisma/migrations
 .git
 npm-debug.log
 *.log
