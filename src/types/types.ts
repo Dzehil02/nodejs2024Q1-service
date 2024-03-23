@@ -39,3 +39,13 @@ export interface Favorites {
     albums: Album[];
     tracks: Track[];
 }
+
+export interface Token {
+    accessToken: string;
+    refreshToken: string;
+}
+
+export interface TokenPayload {
+    id: string;
+    login: string;
+}

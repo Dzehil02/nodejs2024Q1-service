@@ -7,15 +7,12 @@ import { checkEntityById } from 'src/utils/modelValidators';
 import { transformUserResponse, transformUsersResponse } from 'src/utils/transformUsersResponse';
 import { User } from 'src/types/types';
 import { User as UserPrismaClient } from '@prisma/client';
-import { config } from 'dotenv';
 import { compare, hash } from 'bcrypt';
-
-config();
-const CRYPT_SALT = Number(process.env.CRYPT_SALT) || 10;
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UserService {
-    constructor(private prismaService: PrismaService) {}
+    constructor(private prismaService: PrismaService, private readonly config: ConfigService) {}
     async getUser(id: string): Promise<UserPrismaClient> {
         const user = await this.prismaService.user.findUnique({
             where: {
@@ -79,7 +76,29 @@ export class UserService {
         await this.prismaService.user.delete({ where: { id: user.id } });
     }
 
+    async findOneByLogin(login: string): Promise<UserPrismaClient> | null {
+        const user = await this.prismaService.user.findFirst({
+            where: {
+                login: login,
+            },
+            select: {
+                id: true,
+                login: true,
+                password: true,
+                version: true,
+                createdAt: true,
+                updatedAt: true,
+            },
+        });
+
+        if (!user) {
+            return null;
+        }
+
+        return user;
+    }
+
     private hashPassword(password: string): Promise<string> {
-        return hash(password, CRYPT_SALT);
+        return hash(password, Number(this.config.get('CRYPT_SALT')));
     }
 }
