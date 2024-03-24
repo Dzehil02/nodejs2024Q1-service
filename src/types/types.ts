@@ -46,6 +46,13 @@ export interface Token {
 }
 
 export interface TokenPayload {
-    id: string;
+    userId: string;
     login: string;
 }
+
+export type UserTokens = {
+    userId: string;
+    login: string;
+    accessToken: string;
+    refreshToken: string;
+};
