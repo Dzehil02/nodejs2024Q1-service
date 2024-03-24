@@ -1,6 +1,7 @@
 import { BadRequestException, Body, Controller, HttpCode, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { AuthService } from './auth.service';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -13,7 +14,7 @@ export class AuthController {
         if (!user) {
             throw new BadRequestException(`Failed to create user with ${JSON.stringify(dto)}`);
         }
-        return 'You have successfully registered';
+        return user;
     }
 
     @Post('login')
@@ -28,7 +29,10 @@ export class AuthController {
     }
 
     @Post('refresh')
-    refresh(@Body() dto) {
-        return 'refresh';
+    @HttpCode(200)
+    @UsePipes(new ValidationPipe())
+    async refresh(@Body() dto: RefreshTokenDto) {
+        const tokens = await this.authService.refresh(dto);
+        return tokens;
     }
 }

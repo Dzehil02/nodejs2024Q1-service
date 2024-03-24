@@ -11,7 +11,7 @@ export function IsUuidOrNull(validationOptions?: ValidationOptions) {
             validator: {
                 validate(value: any) {
                     if (value === null || value === undefined) {
-                        return true; // Allow null or undefined
+                        return true;
                     }
                     return typeof value === 'string' && validateId(value);
                 },
