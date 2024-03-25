@@ -1,20 +1,32 @@
-import { BadRequestException, Body, Controller, HttpCode, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import {
+    BadRequestException,
+    Body,
+    ClassSerializerInterceptor,
+    Controller,
+    HttpCode,
+    Post,
+    UseInterceptors,
+    UsePipes,
+    ValidationPipe,
+} from '@nestjs/common';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { AuthService } from './auth.service';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
+import { UserResponse } from 'src/user/responses/user.response';
 
 @Controller('auth')
 export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
     @Post('signup')
+    @UseInterceptors(ClassSerializerInterceptor)
     @UsePipes(new ValidationPipe())
     async signup(@Body() dto: CreateUserDto) {
         const user = await this.authService.signup(dto);
         if (!user) {
             throw new BadRequestException(`Failed to create user with ${JSON.stringify(dto)}`);
         }
-        return user;
+        return new UserResponse(user);
     }
 
     @Post('login')

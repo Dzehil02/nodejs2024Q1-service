@@ -1,8 +1,7 @@
 import { User as UserPrismaClient } from '@prisma/client';
 import { User } from 'src/types/types';
 
-export const transformUserResponse = (resUser: UserPrismaClient): Omit<User, 'password'> => {
-    delete resUser.password;
+export const transformUserResponse = (resUser: UserPrismaClient): User => {
     return {
         ...resUser,
         createdAt: new Date(resUser.createdAt).getTime(),
@@ -10,9 +9,8 @@ export const transformUserResponse = (resUser: UserPrismaClient): Omit<User, 'pa
     };
 };
 
-export const transformUsersResponse = (resUsers: UserPrismaClient[]): Omit<User, 'password'>[] => {
+export const transformUsersResponse = (resUsers: UserPrismaClient[]): User[] => {
     return resUsers.map((user) => {
-        delete user.password;
         return {
             ...user,
             createdAt: new Date(user.createdAt).getTime(),

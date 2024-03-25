@@ -10,35 +10,47 @@ import {
     HttpStatus,
     UsePipes,
     ValidationPipe,
+    UseInterceptors,
+    ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
+import { UserResponse } from './responses/user.response';
 
 @Controller('user')
 export class UserController {
     constructor(private readonly userService: UserService) {}
 
     @Post()
+    @UseInterceptors(ClassSerializerInterceptor)
     @UsePipes(new ValidationPipe())
-    create(@Body() createUserDto: CreateUserDto) {
-        return this.userService.create(createUserDto);
+    async create(@Body() createUserDto: CreateUserDto) {
+        const user = await this.userService.create(createUserDto);
+        return new UserResponse(user);
     }
 
     @Get()
-    findAll() {
-        return this.userService.findAll();
+    @UseInterceptors(ClassSerializerInterceptor)
+    async findAll() {
+        const users = await this.userService.findAll();
+        const usersResponse = users.map((user) => new UserResponse(user));
+        return usersResponse;
     }
 
     @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.userService.findOne(id);
+    @UseInterceptors(ClassSerializerInterceptor)
+    async findOne(@Param('id') id: string) {
+        const user = await this.userService.findOne(id);
+        return new UserResponse(user);
     }
 
     @Put(':id')
+    @UseInterceptors(ClassSerializerInterceptor)
     @UsePipes(new ValidationPipe())
-    update(@Param('id') id: string, @Body() updatePasswordDto: UpdatePasswordDto) {
-        return this.userService.update(id, updatePasswordDto);
+    async update(@Param('id') id: string, @Body() updatePasswordDto: UpdatePasswordDto) {
+        const user = await this.userService.update(id, updatePasswordDto);
+        return new UserResponse(user);
     }
 
     @Delete(':id')

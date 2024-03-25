@@ -21,7 +21,7 @@ export class UserService {
         });
         return checkEntityById(id, user);
     }
-    async create(createUserDto: CreateUserDto): Promise<Omit<User, 'password'>> {
+    async create(createUserDto: CreateUserDto): Promise<User> {
         const { login, password } = createUserDto;
         const hashedPassword = await this.hashPassword(password);
 
@@ -35,18 +35,18 @@ export class UserService {
         return transformUserResponse(resUser);
     }
 
-    async findAll(): Promise<Omit<User, 'password'>[]> {
+    async findAll(): Promise<User[]> {
         const users = await this.prismaService.user.findMany();
         return transformUsersResponse(users);
     }
 
-    async findOne(id: string): Promise<Omit<User, 'password'>> {
+    async findOne(id: string): Promise<User> {
         const user = await this.getUser(id);
         const resUser = { ...user };
         return transformUserResponse(resUser);
     }
 
-    async update(id: string, updatePasswordDto: UpdatePasswordDto): Promise<Omit<User, 'password'>> {
+    async update(id: string, updatePasswordDto: UpdatePasswordDto): Promise<User> {
         const user = await this.getUser(id);
 
         const { password } = user;
@@ -71,9 +71,9 @@ export class UserService {
         return transformUserResponse(resUser);
     }
 
-    async remove(id: string): Promise<void> {
+    async remove(id: string): Promise<{ id: string }> {
         const user = await this.getUser(id);
-        await this.prismaService.user.delete({ where: { id: user.id } });
+        return await this.prismaService.user.delete({ where: { id: user.id }, select: { id: true } });
     }
 
     async findOneByLogin(login: string): Promise<UserPrismaClient> | null {
