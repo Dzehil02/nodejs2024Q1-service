@@ -1,5 +1,5 @@
 import { registerDecorator, ValidationOptions, ValidationArguments } from 'class-validator';
-import { validateId } from '../validateId';
+import { validateId } from '../utils/validateId';
 
 export function IsUuidOrNull(validationOptions?: ValidationOptions) {
     return function (object: any, propertyName: string) {

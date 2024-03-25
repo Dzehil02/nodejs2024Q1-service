@@ -13,11 +13,13 @@ import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { AuthService } from './auth.service';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { UserResponse } from 'src/user/responses/user.response';
+import { Public } from 'src/decorators/public.decorator';
 
 @Controller('auth')
 export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
+    @Public()
     @Post('signup')
     @UseInterceptors(ClassSerializerInterceptor)
     @UsePipes(new ValidationPipe())
@@ -29,6 +31,7 @@ export class AuthController {
         return new UserResponse(user);
     }
 
+    @Public()
     @Post('login')
     @HttpCode(200)
     @UsePipes(new ValidationPipe())
