@@ -6,13 +6,13 @@
 git clone {repository URL} or Download ZIP
 ```
 
-### 2. Create _.env_ file 
+### 2. Create _.env_ file
+
 Add **environment variables** (see _.env.example_ file) **or just rename _.env.example_ file to _.env_ file**
 
 ### 3. Run Docker Desktop
 
-> _***! Check the ports and running containers in Docker.***_<br>
-> _***!! If the port is already occupied or other containers are already using the necessary resources, you will need to free up these resources or choose different ports for your application.***_
+> _***! Check the ports and running containers in Docker.***_<br> > _***!! If the port is already occupied or other containers are already using the necessary resources, you will need to free up these resources or choose different ports for your application.***_
 
 ### 4. Run Docker Container
 
@@ -22,7 +22,7 @@ _Open terminal and run app:_
 npm run docker:up (or docker-compose up)
 ```
 
-___OR___ _To download the images from Docker Hub and run the application, use the command:_
+**_OR_** _To download the [images from Docker Hub](https://hub.docker.com/r/dzehil02/nodejs2024q1-service-app-hls-dev, 'My Nest app image') and run the application, use the command:_
 
 ```
 npm run docker:up:pub (or docker-compose -f docker-compose.pub.yml up)
@@ -60,11 +60,14 @@ response -> [
     }
 ]
 ```
+
 ### 5. Run vulnerabilities scanning
+
 ```
 npm run docker:scout:app
 npm run docker:scout:db
 ```
+
 ### 6. Run tests
 
 **After application running open new terminal and enter:**
