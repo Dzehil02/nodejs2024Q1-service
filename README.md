@@ -1,61 +1,102 @@
-# Home Library Service
+# Home Library Service (Docker)
 
-## Prerequisites
-
-- Git - [Download & Install Git](https://git-scm.com/downloads).
-- Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
-
-## Downloading
+### 1. Download this repository
 
 ```
-git clone {repository URL}
+git clone {repository URL} or Download ZIP
 ```
 
-## Installing NPM modules
+### 2. Create _.env_ file
+
+Add **environment variables** (see _.env.example_ file) **or just rename _.env.example_ file to _.env_ file**
+
+### 3. Run Docker Desktop
+
+> _***! Check the ports and running containers in Docker.***_<br> > _***!! If the port is already occupied or other containers are already using the necessary resources, you will need to free up these resources or choose different ports for your application.***_
+
+### 4. Run Docker Container
+
+_Open terminal and run app:_
 
 ```
-npm install
+npm run docker:up (or docker-compose up)
 ```
 
-## Running application
+**_OR_** _To download the [images from Docker Hub](https://hub.docker.com/r/dzehil02/nodejs2024q1-service-app-hls-dev, 'My Nest app image') and run the application, use the command:_
 
 ```
-npm start
+npm run docker:up:pub (or docker-compose -f docker-compose.pub.yml up)
 ```
 
-After starting the app on port (4000 as default) you can open
-in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
-For more information about OpenAPI/Swagger please visit https://swagger.io/.
+> _***!!!***_ - "application is restarting upon changes implemented into src folder" - This feature doesn't work in the current mode. **Only when running the command: npm run docker:up**
 
-## Testing
+-   After starting the app on port (**4000 as default**) you can open
+    in your browser OpenAPI documentation by typing http://localhost:4000/doc
 
-After application running open new terminal and enter:
+-   All requests are available by URL http://localhost:4000/
 
-To run all tests without authorization
+_Examples:_
 
 ```
-npm run test
+get request -> http://localhost:4000/artist
+
+response -> [
+    {
+        "id": "80458200-dd5d-11ee-a97d-c5cef3c97348",
+        "name": "Freddie Mercury",
+        "grammy": false
+    }
+]
+------------------------------------------------------
+get request -> http://localhost:4000/track
+
+response -> [
+    {
+        "id": "7fbbae03-dd5c-11ee-a686-ed5a6659a3e1",
+        "name": "The Show Must Go On",
+        "artistId": "80458200-dd5d-11ee-a97d-c5cef3c97348",
+        "albumId": "201702a0-dd5d-11ee-82b9-f35a2947a09a",
+        "duration": 262
+    }
+]
 ```
 
-To run only one of all test suites
+### 5. Run vulnerabilities scanning
+
+```
+npm run docker:scout:app
+npm run docker:scout:db
+```
+
+### 6. Run tests
+
+**After application running open new terminal and enter:**
+
+_To run all tests without authorization_
+
+```
+npm run test (or npm run docker:test)
+```
+
+_To run only one of all test suites_
 
 ```
 npm run test -- <path to suite>
 ```
 
-To run all test with authorization
+_To run all test with authorization_
 
 ```
 npm run test:auth
 ```
 
-To run only specific test suite with authorization
+_To run only specific test suite with authorization_
 
 ```
 npm run test:auth -- <path to suite>
 ```
 
-### Auto-fix and format
+### 7. For auto-fix and format you can use:
 
 ```
 npm run lint
@@ -64,9 +105,3 @@ npm run lint
 ```
 npm run format
 ```
-
-### Debugging in VSCode
-
-Press <kbd>F5</kbd> to debug.
-
-For more information, visit: https://code.visualstudio.com/docs/editor/debugging
